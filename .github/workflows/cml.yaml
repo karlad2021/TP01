@@ -1,0 +1,22 @@
+name: your-workflow-name
+on: [push]
+jobs:
+   run:
+      runs-on: [ubuntu-latest]
+      container: docker://dvcorg/cml-py3:latest
+      steps:
+         - uses: actions/checkout@v2
+         - name: "Train my model"
+           env:
+               repo_token: ${{ secrets.GITHUB_TOKEN }}
+           run: |
+              # Your ML workflow goes here
+              pip install -r req.txt
+              python train.py
+          
+              git config --global user.name "github-actions[bot]"
+              git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+              git add .
+              git commit -m "commit from CML"
+              git push
